@@ -1,0 +1,10 @@
+# User information & configuration files
+configuration/environment.properties
+configuration/info.json
+
+# Undesirable files
+.vscode
+pythonEnvironment
+__pycache__
+.DS_Store
+.legacy
