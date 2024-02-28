@@ -14,7 +14,9 @@ fi
 
 echo "[INFO] [DOCKER] Start Docker Python image update (Pull)"
 docker pull python
+
 echo "[INFO] [DOCKER] Remove old ${DOCKER_NAME} image"
 docker image rm "${DOCKER_NAME}"
+
 echo "[INFO] [DOCKER] Build new ${DOCKER_NAME} image"
 docker build --build-arg PYENV_LOCATION --build-arg DIRNAME="${REPO_ROOT_DIR}" -t "${DOCKER_NAME}" ./
