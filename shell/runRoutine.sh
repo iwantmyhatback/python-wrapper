@@ -31,7 +31,7 @@ fi
 
 if [ -d "${FULL_PYENV_LOCATION}" ]; then
     echo "[INFO] [DOCKER] Clear existing virtual environment at ${REPO_ROOT_DIR}/${PYENV_LOCATION}"
-    [ $(whence deactivate) ] && deactivate
+    [ $(command -v deactivate) ] && deactivate
     rm -rf "${FULL_PYENV_LOCATION:?}"
 fi
 
