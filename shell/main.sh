@@ -10,23 +10,24 @@
 REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT_DIR}" || exit
 
-
 if [ -z "${ALREADY_SOURCED:-}" ]; then
     . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 else
     echo "[INFO] [ENV] Skipping additional sourcing because ALREADY_SOURCED is defined"
 fi
 
-if [ -d "${PYENV_LOCATION}" ]; then
-    echo "[INFO] [PY_ENV] ${PYENV_LOCATION} does exist."
+FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
+
+if [ -d "${FULL_PYENV_LOCATION}" ]; then
+    echo "[INFO] [PY_ENV] ${FULL_PYENV_LOCATION} does exist."
 else
-    echo "[INFO] [PY_ENV] ${PYENV_LOCATION} does not exist"
-    python3 -m venv "${PYENV_LOCATION}"
+    echo "[INFO] [PY_ENV] ${FULL_PYENV_LOCATION} does not exist"
+    /usr/bin/env python3 -m venv "${FULL_PYENV_LOCATION}"
 fi
 
-. "${PYENV_LOCATION}/bin/activate"
+. "${FULL_PYENV_LOCATION}/bin/activate"
 
-pip install --quiet --requirement requirements.txt
-# pip freeze > requirements.txt
+"${FULL_PYENV_LOCATION}/bin/python" -m pip install --quiet --requirement "${REPO_ROOT_DIR}/requirements.txt"
+# "${PYENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
 
-python3 -Bu python/main.py
+"${FULL_PYENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py"
