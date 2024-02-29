@@ -19,11 +19,8 @@ PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
 git pull
 
 if [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
-    if [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
-        echo "[INFO] [DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image"
-    else
-        echo "[INFO] [DOCKER] Found changes to ${DOCKER_NAME} .......... Rebuilding image"
-    fi
+    [ "${FORCE_DOCKER_REBUILD:-}"  = 'TRUE' ] && echo "[INFO] [DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image"
+    [ "${FORCE_DOCKER_REBUILD:-}" != 'TRUE' ] && echo "[INFO] [DOCKER] Found changes to ${DOCKER_NAME} .......... Rebuilding image"
     "${REPO_ROOT_DIR}/shell/buildImage.sh"
 else
     echo "[INFO] [DOCKER] No changes to ${DOCKER_NAME}"
