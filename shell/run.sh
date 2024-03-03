@@ -34,8 +34,6 @@ if [ ! -d "${FULL_PYENV_LOCATION}" ]; then
     "${FULL_PYENV_LOCATION}/bin/python" -m pip install "${QUIET}" --upgrade pip
 fi
 
-. "${FULL_PYENV_LOCATION}/bin/activate"
-
 "${FULL_PYENV_LOCATION}/bin/python" -m pip install "${QUIET}" --requirement "${REPO_ROOT_DIR}/requirements.txt"
 # "${PYENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
 
