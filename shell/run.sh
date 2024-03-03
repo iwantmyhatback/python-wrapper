@@ -13,7 +13,7 @@ cd "${REPO_ROOT_DIR}" || exit 1
 if [ -z "${ALREADY_SOURCED:-}" ]; then
     . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 else
-    printf "[INFO] [SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
+    printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
 fi
     
 FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
@@ -23,12 +23,12 @@ if [ "${PYTHON_LOG_LEVEL}" != "DEBUG" ]; then
 fi
 
 if [ -d "${FULL_PYENV_LOCATION}" ]; then
-    printf "[INFO] [PY_ENV] %s does exist\n" "${FULL_PYENV_LOCATION}"
+    printf "[INFO]\t[PY_ENV] %s does exist\n" "${FULL_PYENV_LOCATION}"
     . "${FULL_PYENV_LOCATION}/bin/activate"
 fi
 
 if [ ! -d "${FULL_PYENV_LOCATION}" ]; then
-    printf "[INFO] [PY_ENV] %s does not exist\n" "${FULL_PYENV_LOCATION}"
+    printf "[INFO]\t[PY_ENV] %s does not exist\n" "${FULL_PYENV_LOCATION}"
     /usr/bin/env python3 -m venv "${FULL_PYENV_LOCATION}"
     . "${FULL_PYENV_LOCATION}/bin/activate"
     "${FULL_PYENV_LOCATION}/bin/python" -m pip install "${QUIET}" --upgrade pip
