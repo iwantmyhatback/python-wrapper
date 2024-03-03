@@ -14,9 +14,15 @@ if osEnviron.get("PYTHON_LOG_LEVEL"):
         level=PYTHON_LOG_LEVEL,
         format="[%(levelname)s] %(message)s",
         handlers=[
-            log.FileHandler(filename="output.log", mode='w'),
+            log.FileHandler(filename="pyOutput.log", mode='w'),
             log.StreamHandler()
         ]
     )
 
-print('Run some python stuff')
+log.info('Completed Environmental Setup!')
+
+# Bring in some python you want to run here...
+# ie:
+# from pythonFileSomewhere import pythonFunction
+# pythonFunction()
+log.critical('Run pythonFunction() entry point >>>')
