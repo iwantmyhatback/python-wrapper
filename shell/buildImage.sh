@@ -9,14 +9,14 @@ cd "${REPO_ROOT_DIR}" || exit
 if [ -z "${ALREADY_SOURCED:-}" ]; then
     . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 else
-    echo "[INFO] [ENV] Skipping additional sourcing because ALREADY_SOURCED is defined"
+    echo "[INFO] [SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined"
 fi
 
 FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
 
 if [ -d "${FULL_PYENV_LOCATION}" ]; then
     echo "[INFO] [DOCKER] Clear existing virtual environment at ${REPO_ROOT_DIR}/${PYENV_LOCATION}"
-    [ $(command -v deactivate) ] && deactivate
+    [ "$(command -v deactivate)" ] && deactivate
     rm -rf "${FULL_PYENV_LOCATION:?}"
 fi
 
