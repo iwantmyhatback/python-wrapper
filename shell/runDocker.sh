@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Perform the script Execution and all the Deployment tasks
+# Perform the script execution and all the container tasks
 # Includes:
 #   Ensuring script execution is within the repository
 #   Getting repository changes

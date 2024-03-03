@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 
-# Perform the entire Check and Email routine
+# Perform the entire Python execution routine
 # Includes:
 #   Ensuring script execution is within the repository
 #   Export the environment variables set in configuration/environment.properties
