@@ -25,4 +25,4 @@ log.info('[SCRIPT] Completed Environmental Setup!')
 # ie:
 # from pythonFileSomewhere import pythonFunction
 # pythonFunction()
-log.error('[SCRIPT] Run pythonFunction() entry point >>>')
+log.info('[ DONE ] Run pythonFunction() entry point >>>')
