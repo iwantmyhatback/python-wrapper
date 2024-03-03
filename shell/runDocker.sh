@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Perform the entire Check and Email routine and all the Deployment tasks
+# Perform the script Execution and all the Deployment tasks
 # Includes:
 #   Ensuring script execution is within the repository
 #   Getting repository changes
@@ -29,15 +29,12 @@ if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVI
     "${REPO_ROOT_DIR}/shell/buildImage.sh"
 else
     printf "[INFO]\t[DOCKER] No changes to %s\n" "${DOCKER_NAME}"
+    if [ -d "${FULL_PYENV_LOCATION}" ]; then
+        printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYENV_LOCATION}"
+        [ "$(command -v deactivate)" ] && deactivate
+        rm -rf "${FULL_PYENV_LOCATION:?}"
+    fi
 fi
-
-if [ -d "${FULL_PYENV_LOCATION}" ]; then
-    printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYENV_LOCATION}"
-    [ "$(command -v deactivate)" ] && deactivate
-    rm -rf "${FULL_PYENV_LOCATION:?}"
-fi
-
 
 printf "[INFO]\t[DOCKER] Start the Docker run for %s:latest\n" "${DOCKER_NAME}"
-echo "docker run --env-file \"${REPO_ROOT_DIR}/configuration/environment.properties\" --rm --name \"${DOCKER_NAME}\" \"${DOCKER_NAME}:latest\" \"${REPO_ROOT_DIR}/shell/run.sh\""
 docker run --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh"
