@@ -19,7 +19,7 @@ cd "${REPO_ROOT_DIR}" || exit 1
 
 FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
 
-printf "[INFO] [GIT] Start git repository update (Pull)\n"
+printf "[INFO]\t[GIT] Start git repository update (Pull)\n"
 PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
 git pull
 
