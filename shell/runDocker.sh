@@ -5,7 +5,7 @@
 #   Ensuring script execution is within the repository
 #   Getting repository changes
 #   Rebuilding Docker image if there were any git changes
-#   Run the shell/main.sh script in a disposable docker container
+#   Run the shell/run.sh script in a disposable docker container
 
 REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT_DIR}" || exit
@@ -34,4 +34,4 @@ fi
 
 
 echo "[INFO] [DOCKER] Start the Docker run for ${DOCKER_NAME}:latest"
-docker run --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/main.sh"
+docker run --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh"

@@ -11,4 +11,4 @@ EXPOSE 80
 
 RUN /usr/bin/env python3 -m venv "${PYENV_LOCATION}"
 RUN "${PYENV_LOCATION}/bin/python" -m pip install -r requirements.txt
-RUN chmod +x shell/main.sh
+RUN chmod +x shell/run.sh

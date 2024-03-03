@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 # Delete existing Docker image and rebuild the image with current files
-# Can be used when testing adhoc, but is also used by shell/runRoutine.sh in deployments
+# Can be used when testing adhoc, but is also used by shell/runDocker.sh in deployments
 
 REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT_DIR}" || exit
