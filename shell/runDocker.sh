@@ -23,7 +23,7 @@ printf "[INFO]\t[GIT] Start git repository update (Pull)\n"
 PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
 git pull
 
-if [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
+if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
     [ "${FORCE_DOCKER_REBUILD:-}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
     [ "${FORCE_DOCKER_REBUILD:-}" != 'TRUE' ] && printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
     "${REPO_ROOT_DIR}/shell/buildImage.sh"
@@ -39,4 +39,5 @@ fi
 
 
 printf "[INFO]\t[DOCKER] Start the Docker run for %s:latest\n" "${DOCKER_NAME}"
+echo "docker run --env-file \"${REPO_ROOT_DIR}/configuration/environment.properties\" --rm --name \"${DOCKER_NAME}\" \"${DOCKER_NAME}:latest\" \"${REPO_ROOT_DIR}/shell/run.sh\""
 docker run --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh"
