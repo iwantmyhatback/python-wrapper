@@ -1,12 +1,12 @@
 # python-wrapper
-#### Environment stability wrapper for general python executions
+### Environment stability wrapper for general python executions
 
-Can be used in 2 entrypoint methods:
+**Can be used in 2 entrypoint methods:**
 1. `shell/run.sh` which runs baremetial on the machine
 2. `shell/runDocker.sh` which creates, maintains, and runs a container to then execute `shell/run.sh`
 
 
-#### Order of execution:
+### Order of execution:
 1. **Execute `shell/runDocker.sh` :**
     1. Check if `docker` is installed and fail out if not
     2. Export environment variables from `configuration/environment.properties` if `ALREADY_SOURCED` is not already in the environment
