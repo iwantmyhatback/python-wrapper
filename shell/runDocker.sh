@@ -19,9 +19,16 @@ cd "${REPO_ROOT_DIR}" || exit 1
 
 FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
 
-printf "[INFO]\t[GIT] Start git repository update (Pull)\n"
 PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
-git pull
+
+if [ "${LOG_LEVEL}" != "DEBUG" ]; then
+    QUIET="--quiet"
+fi
+
+if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
+    printf "[INFO]\t[GIT]\t Update git repository (Pull)\n"
+    git pull "${QUIET}"
+fi
 
 if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
     [ "${FORCE_DOCKER_REBUILD:-}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
@@ -37,4 +44,4 @@ else
 fi
 
 printf "[INFO]\t[DOCKER] Start the Docker run for %s:latest\n" "${DOCKER_NAME}"
-docker run --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh"
+docker run "${QUIET}" --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh"

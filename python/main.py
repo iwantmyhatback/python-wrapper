@@ -7,11 +7,11 @@ import logging as log
 ################
 
 # Set the loggin level for this entire script set
-if osEnviron.get("PYTHON_LOG_LEVEL"):
-    PYTHON_LOG_LEVEL = str(osEnviron.get("PYTHON_LOG_LEVEL")).upper()
+if osEnviron.get("LOG_LEVEL"):
+    LOG_LEVEL = str(osEnviron.get("LOG_LEVEL")).upper()
     log.root.handlers = []
     log.basicConfig(
-        level=PYTHON_LOG_LEVEL,
+        level=LOG_LEVEL,
         format="[%(levelname)s]\t%(message)s",
         handlers=[
             log.FileHandler(filename="pyOutput.log", mode='w'),
@@ -23,6 +23,6 @@ log.info('[SCRIPT] Completed Environmental Setup!')
 
 # Bring in some python you want to run here...
 # ie:
-# from pythonFileSomewhere import pythonFunction
-# pythonFunction()
-log.info('[ DONE ] Run pythonFunction() entry point >>>')
+# from pythonFileSomewhere import somePythonFunction
+# somePythonFunction()
+log.info('[ DONE ] Run somePythonFunction() entry point >> HERE!')

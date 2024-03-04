@@ -18,7 +18,7 @@ fi
     
 FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
 
-if [ "${PYTHON_LOG_LEVEL}" != "DEBUG" ]; then
+if [ "${LOG_LEVEL}" != "DEBUG" ]; then
     QUIET="--quiet"
 fi
 
