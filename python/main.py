@@ -8,13 +8,14 @@ import logging as log
 
 # Set the loggin level for this entire script set
 if osEnviron.get("LOG_LEVEL"):
-    LOG_LEVEL = str(osEnviron.get("LOG_LEVEL")).upper()
+    LOG_LOCATION = str(osEnviron.get("LOG_LOCATION", "python-output.log"))
+    LOG_LEVEL = str(osEnviron.get("LOG_LEVEL", "INFO")).upper()
     log.root.handlers = []
     log.basicConfig(
         level=LOG_LEVEL,
         format="[%(levelname)s]\t%(message)s",
         handlers=[
-            log.FileHandler(filename="pyOutput.log", mode='w'),
+            log.FileHandler(filename=LOG_LOCATION, mode='w'),
             log.StreamHandler()
         ]
     )
