@@ -7,6 +7,7 @@ REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT_DIR}" || exit 1
 
 if [ -z "${ALREADY_SOURCED:-}" ]; then
+    # shellcheck disable=SC1091
     . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 else
     printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"

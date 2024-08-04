@@ -15,6 +15,7 @@ fi
 REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT_DIR}" || exit 1
 
+# shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 
 FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
@@ -30,6 +31,7 @@ if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
     git pull "${QUIET}"
 fi
 
+# shellcheck disable=SC2086
 if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
     [ "${FORCE_DOCKER_REBUILD:-}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
     [ "${FORCE_DOCKER_REBUILD:-}" != 'TRUE' ] && printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
