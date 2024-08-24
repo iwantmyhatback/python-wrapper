@@ -16,7 +16,7 @@ fi
 cd "${REPO_ROOT_DIR}" || exit 1
 
 printf "[INFO]\t[SH_ENV] Exporting configuration/environment.properties variables:\n"
-while read -r VARIABLE; do
+while read -r VARIABLE || [ -n "${VARIABLE}" ]; do
     if [ "${VARIABLE%"${VARIABLE#?}"}" = "#" ] || [ "${VARIABLE}" = '' ]; then
         continue
     else
