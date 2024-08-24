@@ -12,8 +12,6 @@ if [ ! "$(command -v docker)" ]; then
     exit 1
 fi
 
-
-
 if git rev-parse --show-toplevel > /dev/null 2>&1; then
     REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 else
