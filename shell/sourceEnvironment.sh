@@ -3,7 +3,7 @@
 # Export the environment variables set in configuration/environment.properties
 # and set the indicator that the importing has been done to prevent redundant executions
 
-if git rev-parse --show-toplevel 2>&1 /dev/null; then
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
     REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 else
     FULL_0="$( readlink -f "${0}" )"

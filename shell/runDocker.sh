@@ -14,7 +14,7 @@ fi
 
 
 
-if git rev-parse --show-toplevel 2>&1 /dev/null; then
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
     REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
 else
     FULL_0="$( readlink -f "${0}" )"
