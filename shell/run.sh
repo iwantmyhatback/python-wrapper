@@ -26,34 +26,34 @@ else
     printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
 fi
     
-FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
+FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
     QUIET="--quiet"
 fi
 
-if [ -d "${FULL_PYENV_LOCATION}" ]; then
-    printf "[INFO]\t[PY_ENV] %s does exist\n" "${FULL_PYENV_LOCATION}"
+if [ -d "${FULL_PYVENV_LOCATION}" ]; then
+    printf "[INFO]\t[PY_ENV] %s does exist\n" "${FULL_PYVENV_LOCATION}"
     # shellcheck disable=SC1091
-    . "${FULL_PYENV_LOCATION}/bin/activate"
+    . "${FULL_PYVENV_LOCATION}/bin/activate"
 fi
 
-if [ ! -d "${FULL_PYENV_LOCATION}" ]; then
-    printf "[INFO]\t[PY_ENV] %s does not exist\n" "${FULL_PYENV_LOCATION}"
-    /usr/bin/env python3 -m venv "${FULL_PYENV_LOCATION}"
+if [ ! -d "${FULL_PYVENV_LOCATION}" ]; then
+    printf "[INFO]\t[PY_ENV] %s does not exist\n" "${FULL_PYVENV_LOCATION}"
+    /usr/bin/env python3 -m venv "${FULL_PYVENV_LOCATION}"
     # shellcheck disable=SC1091
-    . "${FULL_PYENV_LOCATION}/bin/activate"
+    . "${FULL_PYVENV_LOCATION}/bin/activate"
     # shellcheck disable=SC2086
-    "${FULL_PYENV_LOCATION}/bin/python" -m pip install ${QUIET} --upgrade pip
+    "${FULL_PYVENV_LOCATION}/bin/python" -m pip install ${QUIET} --upgrade pip
 fi
 
 # shellcheck disable=SC2086
-"${FULL_PYENV_LOCATION}/bin/python" -m pip install ${QUIET} --requirement "${REPO_ROOT_DIR}/requirements.txt"
+"${FULL_PYVENV_LOCATION}/bin/python" -m pip install ${QUIET} --requirement "${REPO_ROOT_DIR}/requirements.txt"
 
 if [ "${REFREEZE_REQUIREMENTS:-}" = 'TRUE' ]; then
     printf "[INFO]\t[PY_ENV] Re-Freezing the Requirements file\n"
-    "${PYENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
+    "${PYVENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
 fi
 
 
-"${FULL_PYENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py"
+"${FULL_PYVENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py"

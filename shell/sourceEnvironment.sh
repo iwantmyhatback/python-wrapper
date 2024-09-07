@@ -20,8 +20,8 @@ while read -r VARIABLE || [ -n "${VARIABLE}" ]; do
     if [ "${VARIABLE%"${VARIABLE#?}"}" = "#" ] || [ "${VARIABLE}" = '' ]; then
         continue
     else
-        printf "[INFO]\t[SH_ENV] >> %s\n" "${VARIABLE?}"
-        export "${VARIABLE:?[ERROR] export failed!}"
+        printf "[INFO]\t[SH_ENV] >>\t %s\n" "${VARIABLE?}"
+        export "${VARIABLE:?[ERROR] export failed in sourceEnvironment.sh!}"
     fi
 done < "${REPO_ROOT_DIR}/configuration/environment.properties"
 

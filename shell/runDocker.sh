@@ -27,7 +27,7 @@ cd "${REPO_ROOT_DIR}" || exit 1
 # shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 
-FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
+FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
 
@@ -36,7 +36,7 @@ if [ "${LOG_LEVEL}" != "DEBUG" ]; then
 fi
 
 if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
-    printf "[INFO]\t[GIT]\t Update git repository (Pull)\n"
+    printf "[INFO]\t[GIT]    Update git repository (Pull)\n"
     git pull "${QUIET}"
 fi
 
@@ -47,10 +47,10 @@ if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVI
     "${REPO_ROOT_DIR}/shell/buildImage.sh"
 else
     printf "[INFO]\t[DOCKER] No changes to %s\n" "${DOCKER_NAME}"
-    if [ -d "${FULL_PYENV_LOCATION}" ]; then
-        printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYENV_LOCATION}"
+    if [ -d "${FULL_PYVENV_LOCATION}" ]; then
+        printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYVENV_LOCATION}"
         [ "$(command -v deactivate)" ] && deactivate
-        rm -rf "${FULL_PYENV_LOCATION:?}"
+        rm -rf "${FULL_PYVENV_LOCATION:?}"
     fi
 fi
 
