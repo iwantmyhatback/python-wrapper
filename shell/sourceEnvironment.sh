@@ -21,7 +21,7 @@ while read -r VARIABLE || [ -n "${VARIABLE}" ]; do
         continue
     else
         printf "[INFO]\t[SH_ENV] >> %s\n" "${VARIABLE?}"
-        export "${VARIABLE?}"
+        export "${VARIABLE:?[ERROR] export failed!}"
     fi
 done < "${REPO_ROOT_DIR}/configuration/environment.properties"
 
