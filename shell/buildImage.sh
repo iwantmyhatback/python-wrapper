@@ -22,16 +22,16 @@ else
     printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
 fi
 
-FULL_PYENV_LOCATION="${REPO_ROOT_DIR}/${PYENV_LOCATION}"
+FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
     QUIET="--quiet"
 fi
 
-if [ -d "${FULL_PYENV_LOCATION}" ]; then
-    printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYENV_LOCATION}"
+if [ -d "${FULL_PYVENV_LOCATION}" ]; then
+    printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYVENV_LOCATION}"
     [ "$(command -v deactivate)" ] && deactivate
-    rm -rf "${FULL_PYENV_LOCATION:?}"
+    rm -rf "${FULL_PYVENV_LOCATION:?}"
 fi
 
 if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
@@ -40,7 +40,7 @@ if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
 fi
 
 printf "[INFO]\t[DOCKER] Remove old %s image\n" "${DOCKER_NAME}"
-docker image rm "${DOCKER_NAME}"
+docker image rm "${DOCKER_NAME}" --force > /dev/null 2>&1
 
 printf "[INFO]\t[DOCKER] Build new %s image\n" "${DOCKER_NAME}"
-docker build "${QUIET}" --build-arg PYENV_LOCATION="${PYENV_LOCATION}" --build-arg DIRNAME="${REPO_ROOT_DIR}" -t "${DOCKER_NAME}" ./
+docker build "${QUIET}" --build-arg PYVENV_LOCATION="${PYVENV_LOCATION}" --build-arg DIRNAME="${REPO_ROOT_DIR}" -t "${DOCKER_NAME}" ./
