@@ -25,4 +25,10 @@ while read -r VARIABLE || [ -n "${VARIABLE}" ]; do
     fi
 done < "${REPO_ROOT_DIR}/configuration/environment.properties"
 
+
+if [ -z "${PYVENV_LOCATION}" ] || [ -z "${LOG_LOCATION}" ] || [ -z "${LOG_LEVEL}" ] || [ -z "${REFREEZE_REQUIREMENTS}" ] || [ -z "${DOCKER_NAME}" ] || [ -z "${FORCE_DOCKER_REBUILD}" ]  || [ -z "${AUTO_UPDATE}" ]; then
+    printf "[ERROR]\t[SH_ENV] MISSING A REQUIRED VAR FROM configuration/environment.properties!\n"
+    exit 1
+fi
+
 export ALREADY_SOURCED=TRUE
