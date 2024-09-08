@@ -22,6 +22,7 @@ else
     printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
 fi
 
+PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
@@ -38,6 +39,8 @@ if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
     printf "[INFO]\t[DOCKER] Update Docker Python image (Pull)\n"
     docker pull "${QUIET}" python:latest
 fi
+
+DOCKER_NAME="${DOCKER_NAME:-python_wrapper}"
 
 printf "[INFO]\t[DOCKER] Remove old %s image\n" "${DOCKER_NAME}"
 docker image rm "${DOCKER_NAME}" --force > /dev/null 2>&1
