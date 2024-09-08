@@ -1,5 +1,6 @@
 from os import environ as osEnviron
 import logging as log
+from pathlib import Path
 
 
 ################
@@ -14,7 +15,12 @@ def main():
     log.root.handlers = []
     basicConfigHandler = [log.StreamHandler()]
     if LOG_LOCATION:
-        basicConfigHandler.append(log.FileHandler(filename=LOG_LOCATION, mode='w'))
+        logLocationPath = Path(LOG_LOCATION)
+        logLocationPath.parent.absolute().mkdir(
+            parents=True, 
+            exist_ok=True
+        )
+        basicConfigHandler.append(log.FileHandler(filename=logLocationPath.absolute(), mode='w'))
 
     log.basicConfig(
         level=LOG_LEVEL,
