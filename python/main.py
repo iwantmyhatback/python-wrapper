@@ -8,18 +8,19 @@ import logging as log
 
 def main():
     # Set the loggin level for this entire script set
-    if osEnviron.get("LOG_LEVEL"):
-        LOG_LOCATION = str(osEnviron.get("LOG_LOCATION", "python-output.log"))
-        LOG_LEVEL = str(osEnviron.get("LOG_LEVEL", "INFO")).upper()
-        log.root.handlers = []
-        log.basicConfig(
-            level=LOG_LEVEL,
-            format="[%(levelname)s]\t%(message)s",
-            handlers=[
-                log.FileHandler(filename=LOG_LOCATION, mode='w'),
-                log.StreamHandler()
-            ]
-        )
+    LOG_LOCATION = str(osEnviron.get("LOG_LOCATION", ""))
+    LOG_LEVEL = str(osEnviron.get("LOG_LEVEL", "INFO")).upper()
+
+    log.root.handlers = []
+    basicConfigHandler = [log.StreamHandler()]
+    if LOG_LOCATION:
+        basicConfigHandler.append(log.FileHandler(filename=LOG_LOCATION, mode='w'))
+
+    log.basicConfig(
+        level=LOG_LEVEL,
+        format="[%(levelname)s]\t%(message)s",
+        handlers=basicConfigHandler
+    )
 
     log.info('[SCRIPT] Completed Environmental Setup!')
 
