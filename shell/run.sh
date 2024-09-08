@@ -25,7 +25,8 @@ if [ -z "${ALREADY_SOURCED:-}" ]; then
 else
     printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
 fi
-    
+
+PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
@@ -52,7 +53,7 @@ fi
 
 if [ "${REFREEZE_REQUIREMENTS:-}" = 'TRUE' ]; then
     printf "[INFO]\t[PY_ENV] Re-Freezing the Requirements file\n"
-    "${PYVENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
+    "${FULL_PYVENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
 fi
 
 
