@@ -27,6 +27,7 @@ cd "${REPO_ROOT_DIR}" || exit 1
 # shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 
+PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
@@ -39,6 +40,8 @@ if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
     printf "[INFO]\t[GIT]    Update git repository (Pull)\n"
     git pull "${QUIET}"
 fi
+
+DOCKER_NAME="${DOCKER_NAME:-python_wrapper}"
 
 # shellcheck disable=SC2086
 if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
