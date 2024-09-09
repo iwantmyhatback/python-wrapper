@@ -25,7 +25,7 @@ fi
 cd "${REPO_ROOT_DIR}" || exit 1
 
 # shellcheck disable=SC1091
-. "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
+. "${REPO_ROOT_DIR}/shell/source_environment.sh"
 
 PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"

@@ -3,11 +3,11 @@
 
 **Can be used in 2 entrypoint methods:**
 1. `shell/run.sh` which runs baremetial on the machine
-2. `shell/runDocker.sh` which creates, maintains, and runs a container to then execute `shell/run.sh`
+2. `shell/run_docker.sh` which creates, maintains, and runs a container to then execute `shell/run.sh`
 
 
 ### Order of execution:
-1. **Execute `shell/runDocker.sh` :**
+1. **Execute `shell/run_docker.sh` :**
     1. Check if `docker` is installed and fail out if not
     2. Export environment variables from `configuration/environment.properties` if `ALREADY_SOURCED` is not already in the environment
     3. if :

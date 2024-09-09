@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 # Delete existing Docker image and rebuild the image with current files
-# Can be used when testing adhoc, but is also used by shell/runDocker.sh in deployments
+# Can be used when testing adhoc, but is also used by shell/run_docker.sh in deployments
 
 if git rev-parse --show-toplevel > /dev/null 2>&1; then
     REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
@@ -16,7 +16,7 @@ fi
 cd "${REPO_ROOT_DIR}" || exit 1
 
 # shellcheck disable=SC1091
-. "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
+. "${REPO_ROOT_DIR}/shell/source_environment.sh"
 
 PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"

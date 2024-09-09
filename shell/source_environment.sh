@@ -22,7 +22,7 @@ if [ -z "${ALREADY_SOURCED}" ]; then
             continue
         else
             printf "[INFO]\t[SH_ENV] >>\t %s\n" "${VARIABLE?}"
-            export "${VARIABLE:?[ERROR] export failed in sourceEnvironment.sh!}"
+            export "${VARIABLE:?[ERROR] export failed in source_environment.sh!}"
         fi
     done < "${REPO_ROOT_DIR}/configuration/environment.properties"
 
