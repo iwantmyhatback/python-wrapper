@@ -15,12 +15,8 @@ else
 fi
 cd "${REPO_ROOT_DIR}" || exit 1
 
-if [ -z "${ALREADY_SOURCED:-}" ]; then
-    # shellcheck disable=SC1091
-    . "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
-else
-    printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
-fi
+# shellcheck disable=SC1091
+. "${REPO_ROOT_DIR}/shell/sourceEnvironment.sh"
 
 PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
