@@ -8,7 +8,7 @@ from pathlib import Path
 ################
 
 def main():
-    # Set the loggin level for this entire script set
+    # Set the logging level for python
     LOG_LOCATION = str(osEnviron.get("LOG_LOCATION", ""))
     LOG_LEVEL = str(osEnviron.get("LOG_LEVEL", "INFO")).upper()
 
