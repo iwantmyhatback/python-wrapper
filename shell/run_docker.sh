@@ -47,7 +47,7 @@ DOCKER_NAME="${DOCKER_NAME:-python_wrapper}"
 if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD}" = 'TRUE' ]; then
     [ "${FORCE_DOCKER_REBUILD}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
     [ "${FORCE_DOCKER_REBUILD}" != 'TRUE' ] && printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
-    "${REPO_ROOT_DIR}/shell/buildImage.sh"
+    "${REPO_ROOT_DIR}/shell/build_image.sh"
 else
     printf "[INFO]\t[DOCKER] No changes to %s\n" "${DOCKER_NAME}"
     if [ -d "${FULL_PYVENV_LOCATION}" ]; then

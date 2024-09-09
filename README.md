@@ -15,7 +15,7 @@
     * Repository HEAD has changed
     * `FORCE_DOCKER_REBUILD` is set to "TRUE"
         
-    4. **Execute `shell/buildImage.sh` :**
+    4. **Execute `shell/build_image.sh` :**
         1. Export environment variables from `configuration/environment.properties` if `ALREADY_SOURCED` is not already in the environment
         2. Deactivate and delete any existing bare metal Python virtual environment
         3. Get Python base Docker image
