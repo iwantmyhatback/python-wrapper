@@ -18,7 +18,7 @@ cd "${REPO_ROOT_DIR}" || exit 1
 # shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/source_environment.sh"
 
-PYVENV_LOCATION="${PYVENV_LOCATION:-pythonVenv}"
+PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
