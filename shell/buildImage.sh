@@ -31,7 +31,7 @@ if [ -d "${FULL_PYVENV_LOCATION}" ]; then
     rm -rf "${FULL_PYVENV_LOCATION:?}"
 fi
 
-if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
+if [ "${AUTO_UPDATE}" = 'TRUE' ]; then
     printf "[INFO]\t[DOCKER] Update Docker Python image (Pull)\n"
     docker pull "${QUIET}" python:latest
 fi

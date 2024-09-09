@@ -36,7 +36,7 @@ if [ "${LOG_LEVEL}" != "DEBUG" ]; then
     QUIET="--quiet"
 fi
 
-if [ "${AUTO_UPDATE:-}" = 'TRUE' ]; then
+if [ "${AUTO_UPDATE}" = 'TRUE' ]; then
     printf "[INFO]\t[GIT]    Update git repository (Pull)\n"
     git pull "${QUIET}"
 fi
@@ -44,9 +44,9 @@ fi
 DOCKER_NAME="${DOCKER_NAME:-python_wrapper}"
 
 # shellcheck disable=SC2086
-if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD:-}" = 'TRUE' ]; then
-    [ "${FORCE_DOCKER_REBUILD:-}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
-    [ "${FORCE_DOCKER_REBUILD:-}" != 'TRUE' ] && printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
+if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD}" = 'TRUE' ]; then
+    [ "${FORCE_DOCKER_REBUILD}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
+    [ "${FORCE_DOCKER_REBUILD}" != 'TRUE' ] && printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
     "${REPO_ROOT_DIR}/shell/buildImage.sh"
 else
     printf "[INFO]\t[DOCKER] No changes to %s\n" "${DOCKER_NAME}"

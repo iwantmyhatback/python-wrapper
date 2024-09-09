@@ -47,7 +47,7 @@ fi
 # shellcheck disable=SC2086
 "${FULL_PYVENV_LOCATION}/bin/python" -m pip install ${QUIET} --requirement "${REPO_ROOT_DIR}/requirements.txt"
 
-if [ "${REFREEZE_REQUIREMENTS:-}" = 'TRUE' ]; then
+if [ "${REFREEZE_REQUIREMENTS}" = 'TRUE' ]; then
     printf "[INFO]\t[PY_ENV] Re-Freezing the Requirements file\n"
     "${FULL_PYVENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
 fi
