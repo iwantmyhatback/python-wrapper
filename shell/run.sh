@@ -53,4 +53,4 @@ if [ "${REFREEZE_REQUIREMENTS}" = 'TRUE' ]; then
 fi
 
 
-"${FULL_PYVENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py"
+"${FULL_PYENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py" "${@}"
