@@ -30,16 +30,18 @@ if [ "${LOG_LEVEL}" != "DEBUG" ]; then
 fi
 
 if [ -d "${FULL_PYVENV_LOCATION}" ]; then
-    printf "[INFO]\t[PY_ENV] %s does exist\n" "${FULL_PYVENV_LOCATION}"
+    printf '[INFO]\t[PY_ENV] "%s" does exist\n' "${FULL_PYVENV_LOCATION}"
     # shellcheck disable=SC1091
     . "${FULL_PYVENV_LOCATION}/bin/activate"
 fi
 
 if [ ! -d "${FULL_PYVENV_LOCATION}" ]; then
-    printf "[INFO]\t[PY_ENV] %s does not exist\n" "${FULL_PYVENV_LOCATION}"
+    printf '[INFO]\t[PY_ENV] Virtual Environment: "%s" does not exist\n' "${FULL_PYVENV_LOCATION}"
     /usr/bin/env python3 -m venv "${FULL_PYVENV_LOCATION}"
+    printf '[INFO]\t[PY_ENV] Virtual Environment: "%s" Created\n' "${FULL_PYVENV_LOCATION}"
     # shellcheck disable=SC1091
     . "${FULL_PYVENV_LOCATION}/bin/activate"
+    printf '[INFO]\t[PY_ENV] Virtual Environment: "%s" Activated\n' "${FULL_PYVENV_LOCATION}"
     # shellcheck disable=SC2086
     "${FULL_PYVENV_LOCATION}/bin/python" -m pip install ${QUIET} --upgrade pip
 fi
@@ -53,4 +55,4 @@ if [ "${REFREEZE_REQUIREMENTS}" = 'TRUE' ]; then
 fi
 
 
-"${FULL_PYENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py" "${@}"
+"${FULL_PYVENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py" "${@}"
