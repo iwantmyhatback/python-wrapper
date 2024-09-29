@@ -1,5 +1,6 @@
 from os import environ as osEnviron
-from system_info import main as system_info
+import platform
+import socket
 import logging as log
 from pathlib import Path
 
@@ -44,6 +45,24 @@ def main():
     log.info('[ DONE ] Run somePythonFunction() entry point >> HERE!')
 
 
+
+
+def system_info():
+    try:
+        sys_info = {}
+        sys_info.update(Platform = platform.system())
+        sys_info.update(Platform_release = platform.release())
+        sys_info.update(Platform_version = platform.version())
+        sys_info.update(Architecture = platform.machine())
+        sys_info.update(Hostname = socket.gethostname())
+        sys_info.update(Processor = platform.processor())
+        log.info(f'[PY_ENV] System Information:')
+        for key, value in sys_info.items():
+            log.info(f'[PY_ENV] >>\t{key}: {value}')
+        return sys_info
+    except Exception as e:
+        log.error(f'{e}')
+        exit(1)
 
 
 if __name__ == "__main__":
