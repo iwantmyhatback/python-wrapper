@@ -1,4 +1,5 @@
 from os import environ as osEnviron
+from system_info import main as system_info
 import logging as log
 from pathlib import Path
 
@@ -20,7 +21,12 @@ def main():
             parents=True, 
             exist_ok=True
         )
-        basicConfigHandler.append(log.FileHandler(filename=logLocationPath.absolute(), mode='w'))
+        basicConfigHandler.append(
+            log.FileHandler(
+                filename=logLocationPath.absolute(), 
+                mode='w'
+            )
+        )
 
     log.basicConfig(
         level=LOG_LEVEL,
@@ -28,6 +34,7 @@ def main():
         handlers=basicConfigHandler
     )
 
+    system_info()
     log.info('[SCRIPT] Completed Environmental Setup!')
 
     # Bring in some python you want to run here...
