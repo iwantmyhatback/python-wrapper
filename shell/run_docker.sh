@@ -37,7 +37,7 @@ if [ "${LOG_LEVEL}" != "DEBUG" ]; then
 fi
 
 if [ "${AUTO_UPDATE}" = 'TRUE' ]; then
-    printf "[INFO]\t[GIT]    Update git repository (Pull)\n"
+    printf "[INFO]\t[ GIT  ]    Update git repository (Pull)\n"
     git pull "${QUIET}"
 fi
 
@@ -58,4 +58,5 @@ else
 fi
 
 printf "[INFO]\t[DOCKER] Start the Docker run for %s:latest\n" "${DOCKER_NAME}"
-docker run "${QUIET}" --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh" "${@}"
+# shellcheck disable=SC2086
+docker run ${QUIET} --env-file "${REPO_ROOT_DIR}/configuration/environment.properties" --rm --name "${DOCKER_NAME}" "${DOCKER_NAME}:latest" "${REPO_ROOT_DIR}/shell/run.sh" "${@}"

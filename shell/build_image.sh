@@ -18,7 +18,10 @@ cd "${REPO_ROOT_DIR}" || exit 1
 # shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/source_environment.sh"
 
-PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}"
+REQUIREMENTS_SHA="$(shasum -a 256 requirements.txt | awk '{$1=$1; print $1}')"
+REQUIREMENTS_SHORT_SHA="$(printf '%s' "${REQUIREMENTS_SHA}" | cut -c 1-16)"
+
+PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}_${REQUIREMENTS_SHORT_SHA}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
@@ -33,7 +36,8 @@ fi
 
 if [ "${AUTO_UPDATE}" = 'TRUE' ]; then
     printf "[INFO]\t[DOCKER] Update Docker Python image (Pull)\n"
-    docker pull "${QUIET}" python:latest
+    # shellcheck disable=SC2086
+    docker pull ${QUIET} python:latest
 fi
 
 DOCKER_NAME="${DOCKER_NAME:-python_wrapper}"
@@ -42,4 +46,6 @@ printf "[INFO]\t[DOCKER] Remove old %s image\n" "${DOCKER_NAME}"
 docker image rm "${DOCKER_NAME}" --force > /dev/null 2>&1
 
 printf "[INFO]\t[DOCKER] Build new %s image\n" "${DOCKER_NAME}"
-docker build "${QUIET}" --build-arg PYVENV_LOCATION="${PYVENV_LOCATION}" --build-arg DIRNAME="${REPO_ROOT_DIR}" -t "${DOCKER_NAME}" ./
+
+# shellcheck disable=SC2086
+docker build ${QUIET} --build-arg PYVENV_LOCATION="${PYVENV_LOCATION}" --build-arg DIRNAME="${REPO_ROOT_DIR}" -t "${DOCKER_NAME}" ./
