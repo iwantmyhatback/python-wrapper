@@ -12,6 +12,8 @@
 * FORCE_DOCKER_REBUILD ::
   * Forced tear down and rebuild of the Docker image
   * (Re)build takes place automatically in `shell/run_docker.sh` if the `git pull` brings in a new commit for the wrapper, or the image does not already exist
+* FORCE_VENV_REBUILD ::
+  * Forced tear down and rebuild of the python virtual environment
 * AUTO_UPDATE ::
   * Activates pull of repository changes
   * Activates pull of python container image
