@@ -21,21 +21,26 @@ cd "${REPO_ROOT_DIR}" || exit 1
 
 # shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/source_environment.sh"
+# shellcheck disable=SC1091
+. "${REPO_ROOT_DIR}/shell/pre_run.sh"
 
-PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}"
+REQUIREMENTS_SHA="$(shasum -a 256 requirements.txt | awk '{$1=$1; print $1}')"
+REQUIREMENTS_SHORT_SHA="$(printf '%s' "${REQUIREMENTS_SHA}" | cut -c 1-16)"
+
+PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}_${REQUIREMENTS_SHORT_SHA}"
 FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
     QUIET="--quiet"
 fi
 
-if [ -d "${FULL_PYVENV_LOCATION}" ]; then
+if [ -d "${FULL_PYVENV_LOCATION}" ] && ! [ "${FORCE_VENV_REBUILD}" = 'TRUE' ]; then
     printf '[INFO]\t[PY_ENV] "%s" does exist\n' "${FULL_PYVENV_LOCATION}"
     # shellcheck disable=SC1091
     . "${FULL_PYVENV_LOCATION}/bin/activate"
 fi
 
-if [ ! -d "${FULL_PYVENV_LOCATION}" ]; then
+if [ ! -d "${FULL_PYVENV_LOCATION}" ] || [ "${FORCE_VENV_REBUILD}" = 'TRUE' ]; then
     printf '[INFO]\t[PY_ENV] Virtual Environment: "%s" does not exist\n' "${FULL_PYVENV_LOCATION}"
     /usr/bin/env python3 -m venv "${FULL_PYVENV_LOCATION}"
     printf '[INFO]\t[PY_ENV] Virtual Environment: "%s" Created\n' "${FULL_PYVENV_LOCATION}"
@@ -56,3 +61,6 @@ fi
 
 
 "${FULL_PYVENV_LOCATION}/bin/python" -Bu "${REPO_ROOT_DIR}/python/main.py" "${@}"
+
+# shellcheck disable=SC1091
+. "${REPO_ROOT_DIR}/shell/post_run.sh"
