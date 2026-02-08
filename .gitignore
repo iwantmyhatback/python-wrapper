@@ -5,7 +5,7 @@ python-output.log
 
 # Undesirable files
 .vscode
-pythonEnvironment
+py_venv*
 __pycache__
 .DS_Store
 .legacy
