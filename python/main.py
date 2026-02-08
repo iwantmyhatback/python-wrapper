@@ -11,20 +11,20 @@ from pathlib import Path
 
 def main():
     # Set the logging level for python
-    LOG_LOCATION = str(osEnviron.get("LOG_LOCATION", ""))
-    LOG_LEVEL = str(osEnviron.get("LOG_LEVEL", "INFO")).upper()
+    LOG_LOCATION = osEnviron.get("LOG_LOCATION", "")
+    LOG_LEVEL = osEnviron.get("LOG_LEVEL", "INFO").upper()
 
     log.root.handlers = []
     basicConfigHandler = [log.StreamHandler()]
     if LOG_LOCATION:
         logLocationPath = Path(LOG_LOCATION)
         logLocationPath.parent.absolute().mkdir(
-            parents=True, 
+            parents=True,
             exist_ok=True
         )
         basicConfigHandler.append(
             log.FileHandler(
-                filename=logLocationPath.absolute(), 
+                filename=logLocationPath.absolute(),
                 mode='w'
             )
         )
@@ -49,20 +49,20 @@ def main():
 
 def system_info():
     try:
-        sys_info = {}
-        sys_info.update(Platform = platform.system())
-        sys_info.update(Platform_release = platform.release())
-        sys_info.update(Platform_version = platform.version())
-        sys_info.update(Architecture = platform.machine())
-        sys_info.update(Hostname = socket.gethostname())
-        sys_info.update(Processor = platform.processor())
-        log.info(f'[PY_ENV] System Information:')
+        sys_info = {
+            'Platform': platform.system(),
+            'Platform_release': platform.release(),
+            'Platform_version': platform.version(),
+            'Architecture': platform.machine(),
+            'Hostname': socket.gethostname(),
+            'Processor': platform.processor(),
+        }
+        log.info('[PY_ENV] System Information:')
         for key, value in sys_info.items():
             log.info(f'[PY_ENV] >>\t{key}: {value}')
         return sys_info
-    except Exception as e:
-        log.error(f'{e}')
-        exit(1)
+    except Exception:
+        log.exception('[PY_ENV] Failed to collect system information')
 
 
 if __name__ == "__main__":
