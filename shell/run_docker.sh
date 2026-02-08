@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 # Perform the script execution and all the container tasks
 # Includes:
@@ -12,26 +13,13 @@ if [ ! "$(command -v docker)" ]; then
     exit 1
 fi
 
-if git rev-parse --show-toplevel > /dev/null 2>&1; then
-    REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
-else
-    FULL_0="$( readlink -f "${0}" )"
-    # Needed because this script is nested 1 level down from the root
-    SCRIPT_DIR_BASENAME="$( basename "$( dirname "$( readlink -f "${0}" )" )" )"
-    SCRIPT_FILE="$( basename "$( readlink -f "${0}" )" )"
-    RELATIVE_0="${SCRIPT_DIR_BASENAME}/${SCRIPT_FILE}"
-    REPO_ROOT_DIR="${FULL_0%%"${RELATIVE_0}"}"
-fi
-cd "${REPO_ROOT_DIR}" || exit 1
-
 # shellcheck disable=SC1091
-. "${REPO_ROOT_DIR}/shell/source_environment.sh"
+. "$(dirname "$0")/helpers.sh"
+REPO_ROOT_DIR="$(helpers__resolve_repo_root)"
+cd "${REPO_ROOT_DIR}" || exit 1
+helpers__source_environment
 
-REQUIREMENTS_SHA="$(shasum -a 256 requirements.txt | awk '{$1=$1; print $1}')"
-REQUIREMENTS_SHORT_SHA="$(printf '%s' "${REQUIREMENTS_SHA}" | cut -c 1-16)"
-
-PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}_${REQUIREMENTS_SHORT_SHA}"
-FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
+FULL_PYVENV_LOCATION="$(helpers__resolve_venv_path)"
 
 PREVIOUS_COMMIT=$(git rev-list HEAD -n 1)
 
@@ -41,21 +29,25 @@ fi
 
 if [ "${AUTO_UPDATE}" = 'TRUE' ]; then
     printf "[INFO]\t[ GIT  ]    Update git repository (Pull)\n"
-    git pull "${QUIET}"
+    # shellcheck disable=SC2086
+    git pull ${QUIET}
 fi
 
 DOCKER_NAME="${DOCKER_NAME:-python_wrapper}"
 
 # shellcheck disable=SC2086
 if [ -z "$(docker images -q ${DOCKER_NAME}:latest 2> /dev/null)" ] || [ "${PREVIOUS_COMMIT}" != "$(git rev-list HEAD -n 1)" ] || [ "${FORCE_DOCKER_REBUILD}" = 'TRUE' ]; then
-    [ "${FORCE_DOCKER_REBUILD}"  = 'TRUE' ] && printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
-    [ "${FORCE_DOCKER_REBUILD}" != 'TRUE' ] && printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
+    if [ "${FORCE_DOCKER_REBUILD}" = 'TRUE' ]; then
+        printf "[INFO]\t[DOCKER] FORCE_DOCKER_REBUILD is active .......... Rebuilding image\n"
+    else
+        printf "[INFO]\t[DOCKER] Found changes to %s .......... Rebuilding image\n" "${DOCKER_NAME}"
+    fi
     "${REPO_ROOT_DIR}/shell/build_image.sh"
 else
     printf "[INFO]\t[DOCKER] No changes to %s\n" "${DOCKER_NAME}"
     if [ -d "${FULL_PYVENV_LOCATION}" ]; then
         printf "[INFO]\t[DOCKER] Clear existing virtual environment at %s\n" "${FULL_PYVENV_LOCATION}"
-        [ "$(command -v deactivate)" ] && deactivate
+        [ -n "${VIRTUAL_ENV}" ] && deactivate 2>/dev/null || true
         rm -rf "${FULL_PYVENV_LOCATION:?}"
     fi
 fi

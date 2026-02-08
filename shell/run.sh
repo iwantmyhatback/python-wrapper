@@ -1,4 +1,5 @@
-#! /usr/bin/env sh
+#!/usr/bin/env sh
+set -e
 
 # Perform the entire Python execution routine
 # Includes:
@@ -7,28 +8,18 @@
 #   Perform Pre-Python dependency checks and installed
 #   Then execute the Python routine
 
-if git rev-parse --show-toplevel > /dev/null 2>&1; then
-    REPO_ROOT_DIR="$(git rev-parse --show-toplevel)"
-else
-    FULL_0="$( readlink -f "${0}" )"
-    # Needed because this script is nested 1 level down from the root
-    SCRIPT_DIR_BASENAME="$( basename "$( dirname "$( readlink -f "${0}" )" )" )"
-    SCRIPT_FILE="$( basename "$( readlink -f "${0}" )" )"
-    RELATIVE_0="${SCRIPT_DIR_BASENAME}/${SCRIPT_FILE}"
-    REPO_ROOT_DIR="${FULL_0%%"${RELATIVE_0}"}"
-fi
+# shellcheck disable=SC1091
+. "$(dirname "$0")/helpers.sh"
+
+REPO_ROOT_DIR="$(helpers__resolve_repo_root)"
 cd "${REPO_ROOT_DIR}" || exit 1
 
-# shellcheck disable=SC1091
-. "${REPO_ROOT_DIR}/shell/source_environment.sh"
+helpers__source_environment
+
 # shellcheck disable=SC1091
 . "${REPO_ROOT_DIR}/shell/pre_run.sh"
 
-REQUIREMENTS_SHA="$(shasum -a 256 requirements.txt | awk '{$1=$1; print $1}')"
-REQUIREMENTS_SHORT_SHA="$(printf '%s' "${REQUIREMENTS_SHA}" | cut -c 1-16)"
-
-PYVENV_LOCATION="${PYVENV_LOCATION:-py_venv}_${REQUIREMENTS_SHORT_SHA}"
-FULL_PYVENV_LOCATION="${REPO_ROOT_DIR}/${PYVENV_LOCATION}"
+FULL_PYVENV_LOCATION="$(helpers__resolve_venv_path)"
 
 if [ "${LOG_LEVEL}" != "DEBUG" ]; then
     QUIET="--quiet"
@@ -56,7 +47,8 @@ fi
 
 if [ "${REFREEZE_REQUIREMENTS}" = 'TRUE' ]; then
     printf "[INFO]\t[PY_ENV] Re-Freezing the Requirements file\n"
-    "${FULL_PYVENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt"
+    "${FULL_PYVENV_LOCATION}/bin/python" -m pip freeze > "${REPO_ROOT_DIR}/requirements.txt.tmp"
+    mv "${REPO_ROOT_DIR}/requirements.txt.tmp" "${REPO_ROOT_DIR}/requirements.txt"
 fi
 
 
