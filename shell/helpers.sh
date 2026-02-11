@@ -66,3 +66,14 @@ helpers__source_environment() {
         printf "[INFO]\t[SH_ENV] Skipping additional sourcing because ALREADY_SOURCED is defined\n"
     fi
 }
+
+# Verify that uv is installed and available in PATH
+# Exits with error and install instructions if not found
+helpers__require_uv() {
+    if ! command -v uv > /dev/null 2>&1; then
+        printf "[ERROR]\t[  UV  ] uv is not installed or not in PATH\n" >&2
+        printf "[ERROR]\t[  UV  ] Install: curl -LsSf https://astral.sh/uv/install.sh | sh\n" >&2
+        printf "[ERROR]\t[  UV  ] Or:      brew install uv\n" >&2
+        exit 1
+    fi
+}

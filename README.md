@@ -10,6 +10,14 @@ A base template project providing reproducible Python execution environments via
 
 ---
 
+### Prerequisites
+- Python 3.x
+- [uv](https://docs.astral.sh/uv/) — `curl -LsSf https://astral.sh/uv/install.sh | sh` or `brew install uv`
+- Docker (for containerized execution only)
+- Git (recommended; fallback uses script path for repo root detection)
+
+---
+
 ### Project Structure
 ```
 python-wrapper/
@@ -64,9 +72,9 @@ python-wrapper/
 2. Source environment variables from `configuration/environment.properties`
 3. Execute `shell/pre_run.sh`
 4. Calculate `requirements.txt` SHA-256 hash and derive venv name
-5. Create/activate Python venv (or reuse existing if hash matches and `FORCE_VENV_REBUILD != TRUE`)
-6. Install/upgrade pip and packages from `requirements.txt`
-7. Optionally refreeze requirements (if `REFREEZE_REQUIREMENTS=TRUE`)
+5. Create/activate Python venv via `uv venv` (or reuse existing if hash matches and `FORCE_VENV_REBUILD != TRUE`)
+6. Install packages from `requirements.txt` via `uv pip install`
+7. Optionally refreeze requirements via `uv pip freeze` (if `REFREEZE_REQUIREMENTS=TRUE`)
 8. **Execute `python/main.py`** with any command-line arguments
 9. Execute `shell/post_run.sh`
 
@@ -81,7 +89,7 @@ Environment variables are defined in `configuration/environment.properties`. See
 | `PYVENV_LOCATION` | Base name for the Python venv directory (hash appended) | `py_venv` |
 | `LOG_LEVEL` | Python logging verbosity | `INFO` |
 | `LOG_LOCATION` | Path to log file (omit for console-only) | *(unset)* |
-| `REFREEZE_REQUIREMENTS` | Overwrite `requirements.txt` with current pip freeze | `FALSE` |
+| `REFREEZE_REQUIREMENTS` | Overwrite `requirements.txt` with current `uv pip freeze` | `FALSE` |
 | `DOCKER_NAME` | Docker image name | `python-wrapper` |
 | `FORCE_DOCKER_REBUILD` | Force Docker image rebuild on every run | `TRUE` |
 | `FORCE_VENV_REBUILD` | Force venv rebuild on every run | `TRUE` |
